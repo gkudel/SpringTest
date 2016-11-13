@@ -23,14 +23,14 @@ public class DataSourceMain {
 				add(new Employee() {{
 					setName("Paweł Kowal");
 				}});
-			}});			
+			}});				
 			for (Employee employee : dao.get()) {
 				System.out.println(employee.toString());
 			}
 			
 			Employee employee = dao.read(1);
 			if(employee != null) System.out.println(employee.toString());
-			else System.out.println("Not Found");
+			else System.out.println("Record Not Found");
 			
 			employee.setName("Grzegorz Kudłacz");
 			if(!dao.update(employee)) {
