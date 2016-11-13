@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<bean id="knight" class="org.springframework.chapter1.beans.BraveKnight">
+		<constructor-arg ref="quest"></constructor-arg>
+	</bean>
+		
+	<bean id="quest" class="org.springframework.chapter1.beans.SlayDragonQuest">
+		<constructor-arg value="#{T(System).out}"></constructor-arg>
+	</bean>
+	<bean id="minstrel"
+		class="org.springframework.chapter1.beans.Minstrel">
+		<constructor-arg value="#{T(System).out}"></constructor-arg>
+	</bean>
+	
+	<bean id="compactDisc" class="org.springframework.chapter1.soundsystem.SgtPeppers" 
+		p:tracks-ref="trackList"/>
+	<bean id="cdPlayer"  class="org.springframework.chapter1.soundsystem.CdPlayer" c:disc-ref="compactDisc"/>
+	<bean id="anotherCdPlayer"  class="org.springframework.chapter1.soundsystem.CdPlayer" 
+		p:disc-ref="compactDisc"/>		
+	
+	<util:list id="trackList">
+		<value>Track1</value>
+		<value>Track2</value>
+		<value>Track3</value>
+		<value>Track4</value>
+	</util:list>
+	<aop:config>
+		<aop:aspect ref="minstrel">
+			<aop:pointcut expression="execution(* *.embarkOnQuest(..))" id="embark"/>
+			<aop:before method="singBeforeQuest" pointcut-ref="embark"/>
+			<aop:after method="singAfterQuest" pointcut-ref="embark"/>
+		</aop:aspect>
+	</aop:config>
+</beans>
